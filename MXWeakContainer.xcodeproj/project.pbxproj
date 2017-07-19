@@ -6,6 +6,21 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		5015EA981F1F77AD0067D812 /* CommonMXWeakContainer */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 5015EA991F1F77AD0067D812 /* Build configuration list for PBXAggregateTarget "CommonMXWeakContainer" */;
+			buildPhases = (
+				5015EA9E1F1F77DA0067D812 /* ShellScript */,
+			);
+			dependencies = (
+				5015EA9D1F1F77C90067D812 /* PBXTargetDependency */,
+			);
+			name = CommonMXWeakContainer;
+			productName = CommonMXWeakContainer;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		5015EA861F1F60430067D812 /* MXWeakContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5015EA841F1F60430067D812 /* MXWeakContainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5015EA8E1F1F60600067D812 /* MXWeakArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 5015EA8C1F1F60600067D812 /* MXWeakArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -15,6 +30,16 @@
 		5015EA961F1F607E0067D812 /* MXWeakSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 5015EA941F1F607E0067D812 /* MXWeakSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5015EA971F1F607E0067D812 /* MXWeakSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 5015EA951F1F607E0067D812 /* MXWeakSet.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5015EA9C1F1F77C90067D812 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5015EA781F1F60430067D812 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5015EA801F1F60430067D812;
+			remoteInfo = MXWeakContainer;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		5015EA811F1F60430067D812 /* MXWeakContainer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MXWeakContainer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,6 +143,11 @@
 						CreatedOnToolsVersion = 8.3.2;
 						ProvisioningStyle = Manual;
 					};
+					5015EA981F1F77AD0067D812 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 2LC6CE6H6L;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 5015EA7B1F1F60430067D812 /* Build configuration list for PBXProject "MXWeakContainer" */;
@@ -133,6 +163,7 @@
 			projectRoot = "";
 			targets = (
 				5015EA801F1F60430067D812 /* MXWeakContainer */,
+				5015EA981F1F77AD0067D812 /* CommonMXWeakContainer */,
 			);
 		};
 /* End PBXProject section */
@@ -147,6 +178,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5015EA9E1F1F77DA0067D812 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Sets the target folders and the final framework product.\nFMK_NAME=${PROJECT_NAME}\n\n# Install dir will be the final output to the framework.\n# The following line create it in the root folder of the current project.\nINSTALL_DIR=${SRCROOT}/Products/${FMK_NAME}.framework\n\n# Working dir will be deleted after the framework creation.\nWRK_DIR=build\nDEVICE_DIR=${WRK_DIR}/Release-iphoneos/${FMK_NAME}.framework\nSIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator/${FMK_NAME}.framework\n\n# -configuration ${CONFIGURATION}\n# Clean and Building both architectures.\n# 分别编译生成真机和模拟器使用的framework\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos clean build\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator clean build\n\n# Cleaning the oldest.\nif [ -d \"${INSTALL_DIR}\" ]\nthen\nrm -rf \"${INSTALL_DIR}\"\nfi\n\nmkdir -p \"${INSTALL_DIR}\"\n\ncp -R \"${DEVICE_DIR}/\" \"${INSTALL_DIR}/\"\n\n# Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7) into one Universal final product.\n# 使用lipo命令将其合并成一个通用framework\n# 最后将生成的通用framework放置在工程根目录下新建的Products目录下\nlipo -create \"${DEVICE_DIR}/${FMK_NAME}\" \"${SIMULATOR_DIR}/${FMK_NAME}\" -output \"${INSTALL_DIR}/${FMK_NAME}\"\n\nrm -r \"${WRK_DIR}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		5015EA7C1F1F60430067D812 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -159,6 +206,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5015EA9D1F1F77C90067D812 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5015EA801F1F60430067D812 /* MXWeakContainer */;
+			targetProxy = 5015EA9C1F1F77C90067D812 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5015EA871F1F60430067D812 /* Debug */ = {
@@ -299,6 +354,22 @@
 			};
 			name = Release;
 		};
+		5015EA9A1F1F77AD0067D812 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 2LC6CE6H6L;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5015EA9B1F1F77AD0067D812 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 2LC6CE6H6L;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -316,6 +387,14 @@
 			buildConfigurations = (
 				5015EA8A1F1F60430067D812 /* Debug */,
 				5015EA8B1F1F60430067D812 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		5015EA991F1F77AD0067D812 /* Build configuration list for PBXAggregateTarget "CommonMXWeakContainer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5015EA9A1F1F77AD0067D812 /* Debug */,
+				5015EA9B1F1F77AD0067D812 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
